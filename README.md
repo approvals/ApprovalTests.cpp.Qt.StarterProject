@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 # ApprovalTests.cpp.Qt.Qt.StarterProject
 
 <!--

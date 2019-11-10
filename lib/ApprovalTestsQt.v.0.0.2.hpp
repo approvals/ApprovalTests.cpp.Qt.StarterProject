@@ -1,6 +1,6 @@
-// ApprovalTestsQt version v.0.0.1
+// ApprovalTestsQt version v.0.0.2
 // More information at: https://github.com/approvals/ApprovalTests.cpp.Qt
-#include "ApprovalTests.hpp"
+
 #include <QTableView>
 #include <QFile>
 #include <QTextStream>
@@ -9,6 +9,18 @@
 #include <QColor>
 #include <QTest>
 #include <QStringBuilder>
+
+#if defined(APPROVALS_CATCH_QT)
+
+#define CATCH_CONFIG_RUNNER
+#include <Catch.hpp>
+
+#define APPROVALS_CATCH_EXISTING_MAIN
+#endif
+
+
+#include "ApprovalTests.hpp"
+
  // ******************** From: QTableViewWriter.h
 #ifndef APPROVALTESTS_CPP_QT_QTABLEVIEWWRITER_H
 #define APPROVALTESTS_CPP_QT_QTABLEVIEWWRITER_H
@@ -138,14 +150,14 @@ namespace ApprovalTestsQt
 
 namespace ApprovalTestsQt
 {
-    void verifyQImage(const QImage& image,
+    inline void verifyQImage(const QImage& image,
         const ApprovalTests::Reporter& reporter = ApprovalTests::DiffReporter())
     {
         QImageApprovalWriter image_writer(image);
         ApprovalTests::Approvals::verify(image_writer, reporter);
     }
 
-    void verifyQTableView(const QTableView& tableWidget,
+    inline void verifyQTableView(const QTableView& tableWidget,
         const ApprovalTests::Reporter& reporter = ApprovalTests::DiffReporter())
     {
         QTableViewWriter table_writer(tableWidget);

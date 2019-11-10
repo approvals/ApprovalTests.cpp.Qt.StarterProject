@@ -31,5 +31,8 @@
 *.out
 *.app
 
+# CLion files
+cmake-build-*
+
 # Qt Creator
 CMakeLists.txt.user

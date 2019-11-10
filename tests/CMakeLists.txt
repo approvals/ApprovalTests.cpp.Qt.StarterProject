@@ -3,8 +3,6 @@ project(StarterProjectQt.tests)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
         main.cpp
-        DemoTest.cpp
-        NewTest.cpp
         WidgetsTest.cpp
         Tutorial.cpp)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} )

@@ -1,3 +1,2 @@
-#define APPROVALS_CATCH
-#include "ApprovalTests.hpp"
-
+#define APPROVALS_CATCH_QT
+#include "ApprovalTestsQt.hpp"

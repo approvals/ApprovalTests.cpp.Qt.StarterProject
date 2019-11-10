@@ -1,4 +1,4 @@
-// ApprovalTestsQt version v.0.0.2
+// ApprovalTestsQt version v.0.0.1
 // More information at: https://github.com/approvals/ApprovalTests.cpp.Qt
 #include <QTableView>
 #include <QFile>

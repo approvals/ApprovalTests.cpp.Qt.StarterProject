@@ -1,6 +1,5 @@
 // ApprovalTestsQt version v.0.0.2
 // More information at: https://github.com/approvals/ApprovalTests.cpp.Qt
-
 #include <QTableView>
 #include <QFile>
 #include <QTextStream>
@@ -9,17 +8,24 @@
 #include <QColor>
 #include <QTest>
 #include <QStringBuilder>
+ // ******************** From: LoadApprovals.h
+#ifndef APPROVALTESTS_CPP_QT_LOADAPPROVALS_H
+#define APPROVALTESTS_CPP_QT_LOADAPPROVALS_H
 
+
+
+
+// <SingleHpp unalterable>
 #if defined(APPROVALS_CATCH_QT)
-
-#define CATCH_CONFIG_RUNNER
-#include <Catch.hpp>
-
-#define APPROVALS_CATCH_EXISTING_MAIN
+    #define CATCH_CONFIG_RUNNER
+    #include <Catch.hpp>
+    #define APPROVALS_CATCH_EXISTING_MAIN
 #endif
 
-
 #include "ApprovalTests.hpp"
+// </SingleHpp>
+
+#endif 
 
  // ******************** From: QTableViewWriter.h
 #ifndef APPROVALTESTS_CPP_QT_QTABLEVIEWWRITER_H
@@ -195,7 +201,6 @@ namespace ApprovalTestsQt
 
 #if defined(APPROVALS_CATCH_QT)
 
-#define APPROVALS_CATCH_EXISTING_MAIN
 
 int main(int argc, char* argv[])
 {

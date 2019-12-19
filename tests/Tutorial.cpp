@@ -1,5 +1,5 @@
 #include "ApprovalTestsQt.hpp"
-#include "Catch.hpp"
+#include "catch.hpp"
 
 // TODO Update this to ApprovalTests.cpp.Qt
 // See the tutorial at:

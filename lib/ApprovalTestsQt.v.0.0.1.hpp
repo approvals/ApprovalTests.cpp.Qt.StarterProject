@@ -18,7 +18,7 @@
 // <SingleHpp unalterable>
 #if defined(APPROVALS_CATCH_QT)
     #define CATCH_CONFIG_RUNNER
-    #include <Catch.hpp>
+    #include <catch.hpp>
     #define APPROVALS_CATCH_EXISTING_MAIN
 #endif
 

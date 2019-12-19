@@ -1,4 +1,4 @@
-#include "Catch.hpp"
+#include "catch.hpp"
 #include <QImage>
 #include <QTableWidget>
 #include "ApprovalTestsQt.hpp"

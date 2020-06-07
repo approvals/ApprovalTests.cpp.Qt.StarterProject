@@ -9,4 +9,4 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES} )
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
 
 find_package(Qt5 COMPONENTS Widgets Test REQUIRED)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Test)
+target_link_libraries(${PROJECT_NAME} ApprovalTestsQt::ApprovalTestsQt Catch2::Catch2 Qt5::Widgets Qt5::Test)

@@ -3289,7 +3289,10 @@ namespace ApprovalTests
 
         template <typename T,
                   typename Function,
-                  typename = Detail::EnableIfNotDerivedFromReporter<Function>>
+                  // Patched for https://github.com/approvals/ApprovalTests.cpp/issues/139
+                  // to allow incremental update to ApprovalTests v10.0.1:
+                  // typename = Detail::EnableIfNotDerivedFromReporter<Function>>
+                  typename = Detail::EnableIfNotOptionsOrReporter<Function>>
         static void
         verify(const T& contents, Function converter, const Options& options = Options())
         {

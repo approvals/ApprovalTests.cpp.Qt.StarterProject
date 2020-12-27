@@ -105,7 +105,7 @@ jobs:
     - name: build
       run: |
         cd ${{ env.BUILD_PATH }}
-        cmake --build .
+        cmake --build . --parallel 4
 # Not running tests for now: hangs forever on Windows, and doesn't find display on other platforms
 #    - name: test
 #      run: |

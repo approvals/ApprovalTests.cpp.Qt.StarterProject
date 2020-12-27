@@ -93,18 +93,12 @@ jobs:
     - uses: seanmiddleditch/gha-setup-ninja@v3
       if: contains(matrix.generator, 'Ninja')
 
-    - name: check env
-      run: |
-        echo Build space: ${{ env.BUILD_PATH }}
-
     - name: install qt
       uses: jurplel/install-qt-action@v2
 
-    - name: make build space
+    - name: configure
       run: |
         mkdir ${{ env.BUILD_PATH }}
-    - name: cmake
-      run: |
         cd ${{ env.BUILD_PATH }}
         cmake --version
         cmake -G ${{ matrix.generator }} ${{ github.workspace }}

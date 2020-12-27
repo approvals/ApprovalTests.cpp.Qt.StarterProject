@@ -90,7 +90,7 @@ jobs:
     name: ${{ matrix.job-name }}
     steps:
     - uses: actions/checkout@master
-    - uses: seanmiddleditch/gha-setup-ninja@v1
+    - uses: seanmiddleditch/gha-setup-ninja@v3
       if: contains(matrix.generator, 'Ninja')
 
     - name: check env

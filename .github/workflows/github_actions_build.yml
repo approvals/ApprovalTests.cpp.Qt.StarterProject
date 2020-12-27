@@ -109,30 +109,30 @@ jobs:
     - name: set env for in-source build tree
       if: matrix.in_source_build == true
       run: |
-        echo "::set-env name=BUILD_DIR_PATH::${{ env.IN_TREE_BUILD_DIR }}"
+        echo "::set-env name=BUILD_PATH::${{ env.IN_TREE_BUILD_DIR }}"
     - name: set env out-of-source
       if: matrix.in_source_build == false
       run: |
-        echo "::set-env name=BUILD_DIR_PATH::${{ env.OUT_OF_TREE_BUILD_DIR }}"
+        echo "::set-env name=BUILD_PATH::${{ env.OUT_OF_TREE_BUILD_DIR }}"
     - name: check env
       run: |
-        echo Build space: ${{ env.BUILD_DIR_PATH }}
+        echo Build space: ${{ env.BUILD_PATH }}
 
     - name: install qt
       uses: jurplel/install-qt-action@v2
 
     - name: make build space
       run: |
-        mkdir ${{ env.BUILD_DIR_PATH }}
+        mkdir ${{ env.BUILD_PATH }}
     - name: cmake
       run: |
         cmake --version
         cmake -G ${{ matrix.generator }} ${{ github.workspace }}
-      working-directory: ${{ env.BUILD_DIR_PATH }}
+      working-directory: ${{ env.BUILD_PATH }}
     - name: build
       run: cmake --build .
-      working-directory: ${{ env.BUILD_DIR_PATH }}
+      working-directory: ${{ env.BUILD_PATH }}
 # Not running tests for now: hangs forever on Windows, and doesn't find display on other platforms
 #    - name: test
 #      run: ctest --verbose --parallel 4 -C Debug
-#      working-directory: ${{ env.BUILD_DIR_PATH }}
+#      working-directory: ${{ env.BUILD_PATH }}

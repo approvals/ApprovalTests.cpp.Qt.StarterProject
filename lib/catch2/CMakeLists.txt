@@ -4,8 +4,6 @@ if(NOT TARGET Catch2)
     add_library(${PROJECT_NAME} INTERFACE)
     target_include_directories(${PROJECT_NAME}
             INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include
-            # Allow <catch.hpp> to be found, as used in ApprovalTestsQt.v.0.0.1.hpp:
-            INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/catch2
             )
 
     # Mimic the library names in Catch2's own CMake files:

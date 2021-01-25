@@ -2,7 +2,6 @@
 
 # ApprovalTests.cpp.Qt.StarterProject
 
-[![Build Status](https://travis-ci.com/approvals/ApprovalTests.cpp.Qt.StarterProject.svg?branch=master)](https://travis-ci.com/approvals/ApprovalTests.cpp.Qt.StarterProject/builds) 
 [![Build status](https://ci.appveyor.com/api/projects/status/tpitsul9axlv93uk/branch/master?svg=true)](https://ci.appveyor.com/project/isidore/approvaltests-cpp-qt-starterproject/branch/master) 
 [![Build Status](https://github.com/approvals/ApprovalTests.cpp.Qt.StarterProject/workflows/build/badge.svg?branch=master)](https://github.com/approvals/ApprovalTests.cpp.Qt.StarterProject/actions?query=branch%3Amaster) 
 

@@ -1,4 +1,4 @@
-// ApprovalTests.cpp.Qt version v.0.0.2
+// ApprovalTests.cpp.Qt version v.0.0.3
 // More information at: https://github.com/approvals/ApprovalTests.cpp.Qt
 
 
@@ -147,6 +147,14 @@ namespace ApprovalTestsQt
             remove(receivedPath.c_str());
         }
 
+        static void createEmptyImage(std::string fileName)
+        {
+            QImage image(1, 1, QImage::Format_ARGB32);
+            image.fill(Qt::transparent);
+            ApprovalTestsQt::QImageApprovalWriter image_writer(image);
+            image_writer.write(fileName);
+        }
+
     private:
         QImage image_;
         std::string fileExtensionWithDot_;
@@ -154,43 +162,6 @@ namespace ApprovalTestsQt
 } // namespace ApprovalTestsQt
 
 #endif //APPROVALTESTS_CPP_QT_QIMAGEAPPROVALWRITER_H
-
-// ******************** From: ApprovalTestsQtVersion.h
-
-#define APPROVAL_TESTS_QT_VERSION_MAJOR 0
-#define APPROVAL_TESTS_QT_VERSION_MINOR 0
-#define APPROVAL_TESTS_QT_VERSION_PATCH 2
-#define APPROVAL_TESTS_QT_VERSION_STR "0.0.2"
-
-#define APPROVAL_TESTS_QT_VERSION                                                        \
-    (APPROVAL_TESTS_QT_VERSION_MAJOR * 10000 + APPROVAL_TESTS_QT_VERSION_MINOR * 100 +   \
-     APPROVAL_TESTS_QT_VERSION_PATCH)
-
-// ******************** From: ApprovalsQt.h
-#ifndef APPROVALTESTS_CPP_QT_APPROVALSQT_H
-#define APPROVALTESTS_CPP_QT_APPROVALSQT_H
-
-
-namespace ApprovalTestsQt
-{
-    inline void
-    verifyQImage(const QImage& image,
-                 const ApprovalTests::Options& options = ApprovalTests::Options())
-    {
-        QImageApprovalWriter image_writer(image);
-        ApprovalTests::Approvals::verify(image_writer, options);
-    }
-
-    inline void
-    verifyQTableView(const QTableView& tableWidget,
-                     const ApprovalTests::Options& options = ApprovalTests::Options())
-    {
-        QTableViewWriter table_writer(tableWidget);
-        ApprovalTests::Approvals::verify(table_writer, options);
-    }
-} // namespace ApprovalTestsQt
-
-#endif //APPROVALTESTS_CPP_QT_APPROVALSQT_H
 
 // ******************** From: QImageApprovalComparator.h
 #ifndef APPROVALTESTS_CPP_QT_QIMAGEAPPROVALCOMPARATOR_H
@@ -215,13 +186,96 @@ namespace ApprovalTestsQt
 
 #endif //APPROVALTESTS_CPP_QT_QIMAGEAPPROVALCOMPARATOR_H
 
+// ******************** From: ApprovalTestsQtVersion.h
+
+#define APPROVAL_TESTS_QT_VERSION_MAJOR 0
+#define APPROVAL_TESTS_QT_VERSION_MINOR 0
+#define APPROVAL_TESTS_QT_VERSION_PATCH 3
+#define APPROVAL_TESTS_QT_VERSION_STR "0.0.3"
+
+#define APPROVAL_TESTS_QT_VERSION                                                        \
+    (APPROVAL_TESTS_QT_VERSION_MAJOR * 10000 + APPROVAL_TESTS_QT_VERSION_MINOR * 100 +   \
+     APPROVAL_TESTS_QT_VERSION_PATCH)
+
+// ******************** From: ApprovalsQt.h
+#ifndef APPROVALTESTS_CPP_QT_APPROVALSQT_H
+#define APPROVALTESTS_CPP_QT_APPROVALSQT_H
+
+
+namespace ApprovalTestsQt
+{
+
+    inline void initializeQtApprovals()
+    {
+        // When comparing PNG files, get Qt to read the two image files and
+        // compare the QImage objects, instead of using the built-in
+        // character-based file comparison, which may fail for two
+        // exactly equivalent .png files.
+        static auto pngComparatorDisposer =
+            ApprovalTests::FileApprover::registerComparatorForExtension(
+                ".png", std::make_shared<ApprovalTestsQt::QImageApprovalComparator>());
+
+        ApprovalTests::EmptyFileCreatorByType::registerCreator(
+            ".png", QImageApprovalWriter::createEmptyImage);
+    }
+
+    inline void
+    verifyQImage(const QImage& image,
+                 const ApprovalTests::Options& options = ApprovalTests::Options())
+    {
+        QImageApprovalWriter image_writer(image);
+        ApprovalTests::Approvals::verify(image_writer, options);
+    }
+
+    inline void
+    verifyQTableView(const QTableView& tableWidget,
+                     const ApprovalTests::Options& options = ApprovalTests::Options())
+    {
+        QTableViewWriter table_writer(tableWidget);
+        ApprovalTests::Approvals::verify(table_writer, options);
+    }
+} // namespace ApprovalTestsQt
+
+#endif //APPROVALTESTS_CPP_QT_APPROVALSQT_H
+
+// ******************** From: SafeQTestMacros.h
+
+// TODO Add detection of QVERIFY, QTRY_COMPARE and so on
+
+#include <type_traits>
+#include <QCoreApplication>
+#include <QTest>
+
+namespace qft
+{
+    void sender(...);
+}
+
+// A custom QCOMPARE implementation, for use with tests that are driven
+// by Catch2, or any other non-QtTest main(), that want access to QtTest
+// in order to use QSignalSpy - but must not use QCOMPARE and similar,
+// as any failures in these macros are silently ignored when called
+// from outside a QObject slot.
+//
+// Credit: Fabian Kosmale at Qt, November 2019
+
+#undef QCOMPARE
+#define QCOMPARE(actual, expected)                                                       \
+    do                                                                                   \
+    {                                                                                    \
+        using namespace qft;                                                             \
+        static_assert(std::is_same<decltype(sender()), QObject*>::value,                 \
+                      "Cannot user QCOMPARE outside of a QObject slot");                 \
+        if (!QTest::qCompare(actual, expected, #actual, #expected, __FILE__, __LINE__))  \
+            return;                                                                      \
+    } while (false)
+
 // ******************** From: Catch2QtApprovals.h
 #ifndef APPROVALTESTS_CPP_QT_CATCH2QTAPPROVALS_H
 #define APPROVALTESTS_CPP_QT_CATCH2QTAPPROVALS_H
 
 #if defined(APPROVALS_CATCH_QT)
 
-#include <QApplication>
 #include <QApplication>
 
 int main(int argc, char* argv[])
@@ -232,13 +286,7 @@ int main(int argc, char* argv[])
     // So we follow the lead of the Qt Test framework and create it in main().
     QApplication app(argc, argv);
 
-    // When comparing PNG files, get Qt to read the two image files and
-    // compare the QImage objects, instead of using the built-in
-    // character-based file comparison, which may fail for two
-    // exactly equivalent .png files.
-    auto pngComparatorDisposer =
-        ApprovalTests::FileApprover::registerComparatorForExtension(
-            ".png", std::make_shared<ApprovalTestsQt::QImageApprovalComparator>());
+    ApprovalTestsQt::initializeQtApprovals();
 
     // your existing setup...
     int result = Catch::Session().run(argc, argv);

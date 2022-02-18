@@ -55,7 +55,7 @@ jobs:
           relative_build_dir_path: ''
 
         - job-name: windows-latest (clangcl)
-          os: windows-latest
+          os: windows-2019
           generator: '"Visual Studio 16 2019" -T "clangcl"'
           relative_build_dir_path: ''
 
